@@ -29,50 +29,6 @@ typedef _tagPoint* PPOINT;
 
 
 
-void SetItem(char Maze[21][21], PPOINT pPlayerPos)
-{
-	srand((unsigned int)time(0)); // 랜덤 으로 시간 설정
-
-	int iRand = 0;
-	int iStat = 0;
-	
-	// for loop 을 통해서 배열을 체크하여 1(길)인 지점을 랜덤하게 골라서 아이템을 놓아 준다.
-	for (int i = 0; i < 20; ++i)
-	{
-		for (int j = 0; j < 20; ++j)
-		{
-			if (Maze[j][i] == '1') // 메이즈 내부가 길이면 랜덤하게 아이템 놓기
-			{
-				iStat = rand() % 100; //5% 의 확률로 
-				//if 로 진입해서  길위에 아이템을 놓는다.
-				if (iStat < 50) //2%의 확률로 맵에 뜨게 설정
-				{
-					iRand = (rand() % 4 + 4); // 아이템이 랜덤하게 골라졌다면 그 아이템을 칸중에 5% 확률로 떨궈준다.
-					// 이전에 확률 변수를 넣어서 if 문으로 들어가는 확률을 다시 설정해준다.
-					if (iRand == 4)
-					{
-						Maze[j][i] = '4'; //지뢰
-					}
-					else if (iRand == 5)
-					{
-						Maze[j][i] = '5'; //투명
-					}
-					else if (iRand == 6)
-					{
-						Maze[j][i] = '6'; //벽 건너뛰기
-					}
-					else if (iRand == 7)
-					{
-						Maze[j][i] = '7'; //벽 밀기
-					}
-
-				}
-			}
-		}
-	}
-	
-}
-
 void SetMaze(char Maze[21][21], PPOINT pPlayerPos, PPOINT pStartPos,
 PPOINT pEndPos) //null 값이 맨마지막에 들어가야해서 21로 설정
 {
@@ -125,8 +81,8 @@ void Output(char Maze[21][21], PPOINT pPlayerPos)
 
 			else if (Maze[i][j] == '0') //벽
 				cout << "■";
-
-			else if (Maze[i][j] == '1') //길
+			
+			else if (Maze[i][j] == '1')
 				cout << "  ";
 
 			else if (Maze[i][j] == '2')
@@ -135,17 +91,6 @@ void Output(char Maze[21][21], PPOINT pPlayerPos)
 			else if (Maze[i][j] == '3')
 				cout << "Ο";
 
-			else if (Maze[i][j] == '4') //지뢰 폭탄으로 좌우 상하 벽 없애기
-				cout << "※";
-
-			else if (Maze[i][j] == '5') //투명 상태여서 아무곳으로 이동가능
-				cout << "±";
-
-			else if (Maze[i][j] == '6') //벽 건너뛰기
-				cout << "℃";
-			
-			else if (Maze[i][j] == '7') //벽 밀치기
-				cout << "℉";
 			
 		}
 		cout << endl;
@@ -181,8 +126,6 @@ void JumpWall(char Maze[21][21], PPOINT pPlayerPos)
 {
 	//점프wall 아이템의 경우 지속적으로 사용가능하도록 설계(아이템 사용 버튼 생성)
 }
-
-
 
 
 void MoveUp(char Maze[21][21], PPOINT pPlayerPos)
@@ -279,9 +222,7 @@ int main()
 
 
 	// 미로를 설정
-	SetMaze(strMaze, &tPlayerPos, &tStartPos, &tEndPos); //맵 초기 설정
-	SetItem(strMaze, &tPlayerPos); // 아이템을 길에 2% 확률로 떨군다
-	//메이즈를 설정한 이후에 빈공간(1) 길쪽에 랜덤하게 아이템 설정해준다.
+	SetMaze(strMaze, &tPlayerPos, &tStartPos, &tEndPos);
 
 	while (true)
 	{
@@ -306,8 +247,8 @@ int main()
 			break;
 
 		MovePlayer(strMaze, &tPlayerPos, cInput);
-		Bomb(strMaze, &tPlayerPos);
 
+		
 		
 	}
 
