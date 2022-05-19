@@ -14,11 +14,15 @@ struct _tagPoint
 {
 	int x;
 	int y;
+	bool destination = false;
 };
 
 //타입 재정의
 typedef _tagPoint POINT;
 typedef _tagPoint* PPOINT;
+
+
+
 
 void SetMaze(char Maze[21][21], PPOINT pPlayerPos, PPOINT pStartPos,
 PPOINT pEndPos) //null 값이 맨마지막에 들어가야해서 21로 설정
@@ -60,7 +64,15 @@ void Output(char Maze[21][21], PPOINT pPlayerPos)
 		for (int j = 0; j < 20; ++j)
 		{
 			if (pPlayerPos->x == j && pPlayerPos->y == i)
+			{
 				cout << "Δ";
+				if (Maze[pPlayerPos->y][pPlayerPos->x] == '3')
+				{
+					pPlayerPos->destination = true;
+				}
+					
+			}
+				
 
 			else if (Maze[i][j] == '0')
 				cout << "■";
@@ -70,10 +82,11 @@ void Output(char Maze[21][21], PPOINT pPlayerPos)
 
 			else if (Maze[i][j] == '2')
 				cout << "∑";
-
+			
 			else if (Maze[i][j] == '3')
 				cout << "Ο";
 
+			
 		}
 		cout << endl;
 	}
@@ -159,6 +172,7 @@ void MovePlayer(char Maze[21][21], PPOINT pPlayerPos, char cInput)
 }
 
 
+
 int main()
 {
 
@@ -179,7 +193,16 @@ int main()
 	{
 		system("cls");
 		//미로를 출력
+		
+
 		Output(strMaze, &tPlayerPos);
+		if (tPlayerPos.destination == true)
+		{
+			//cout << endl;
+			cout << " 도착하였습니다. " << endl;
+			system("pause");
+		}
+
 		cout << "w : 위  s : 아래 a : 왼쪽 d : 오른쪽 q : 종료 ";
 		char cInput = _getch();  //키 입력
 
@@ -189,7 +212,10 @@ int main()
 
 		MovePlayer(strMaze, &tPlayerPos, cInput);
 
+		
+		
 	}
+
 	
 
 
